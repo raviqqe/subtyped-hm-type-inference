@@ -1,4 +1,5 @@
 use std::collections::HashMap;
+use std::collections::HashSet;
 use std::fmt::{Display, Formatter};
 use std::sync::Arc;
 
@@ -27,10 +28,7 @@ impl Type {
 }
 
 #[derive(Clone, Debug, Eq, PartialEq)]
-pub enum TypeScheme {
-    Type(Type),
-    Lambda(usize, Type),
-}
+pub struct TypeScheme(HashSet<usize>, Type);
 
 impl Display for Type {
     fn fmt(&self, formatter: &mut Formatter) -> std::fmt::Result {
