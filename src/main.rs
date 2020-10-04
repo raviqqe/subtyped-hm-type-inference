@@ -14,12 +14,24 @@ fn main() {
             Type::Number,
         ),
         (
+            let_("f", lambda("x", var("x")), app(var("f"), num(42))),
+            Type::Number,
+        ),
+        (
             let_(
                 "f",
                 lambda("x", num(42)),
                 let_("y", app(var("f"), num(42)), var("f")),
             ),
             Type::Function(Type::Number.into(), Type::Number.into()),
+        ),
+        (
+            let_(
+                "f",
+                lambda("x", lambda("x", num(42))),
+                app(app(var("f"), num(42)), num(42)),
+            ),
+            Type::Number,
         ),
     ] {
         let (_, type_) = infer(&Default::default(), expression).unwrap();

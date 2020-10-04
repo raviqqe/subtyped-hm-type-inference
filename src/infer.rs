@@ -73,7 +73,10 @@ fn unify(one: &Type, other: &Type) -> Result<HashMap<usize, Type>, InferenceErro
         ) => {
             let mut substitutions = unify(one_argument, other_argument)?;
 
-            substitutions.extend(unify(one_result, other_result)?);
+            substitutions.extend(unify(
+                &one_result.substitute(&substitutions),
+                &other_result.substitute(&substitutions),
+            )?);
 
             substitutions
         }
