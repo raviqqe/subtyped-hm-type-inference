@@ -9,6 +9,7 @@ use types::*;
 fn main() {
     for (expression, expected_type) in &[
         (num(42), Type::Number),
+        (let_("x", num(42), var("x")), Type::Number),
         (
             let_("f", lambda("x", num(42)), app(var("f"), num(42))),
             Type::Number,
