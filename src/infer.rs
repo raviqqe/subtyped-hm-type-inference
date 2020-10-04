@@ -51,7 +51,7 @@ pub fn infer(
 
             (substitutions.clone(), type_.substitute(&substitutions))
         }
-        Expression::Number => (Default::default(), Type::Number),
+        Expression::Number(_) => (Default::default(), Type::Number),
         Expression::Variable(variable) => (
             Default::default(),
             environment.get(variable).ok_or(InferenceError)?.clone(),

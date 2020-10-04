@@ -8,33 +8,16 @@ use types::*;
 
 fn main() {
     for (expression, expected_type) in &[
-        (Expression::Number, Type::Number),
+        (num(42), Type::Number),
         (
-            Expression::Let(
-                "f".into(),
-                Expression::Lambda("x".into(), Expression::Number.into()).into(),
-                Expression::Application(
-                    Expression::Variable("f".into()).into(),
-                    Expression::Number.into(),
-                )
-                .into(),
-            ),
+            let_("f", lambda("x", num(42)), app(var("f"), num(42))),
             Type::Number,
         ),
         (
-            Expression::Let(
-                "f".into(),
-                Expression::Lambda("x".into(), Expression::Number.into()).into(),
-                Expression::Let(
-                    "y".into(),
-                    Expression::Application(
-                        Expression::Variable("f".into()).into(),
-                        Expression::Number.into(),
-                    )
-                    .into(),
-                    Expression::Variable("f".into()).into(),
-                )
-                .into(),
+            let_(
+                "f",
+                lambda("x", num(42)),
+                let_("y", app(var("f"), num(42)), var("f")),
             ),
             Type::Function(Type::Number.into(), Type::Number.into()),
         ),
