@@ -11,6 +11,7 @@ pub fn infer_type_scheme(expression: &Expression) -> Result<TypeScheme, Inferenc
     Ok(TypeScheme(type_.variables(), type_))
 }
 
+// TODO Fix the type of substitutions. Replace it with Vec<(usize, Type)>?
 fn infer(
     environment: &HashMap<String, TypeScheme>,
     expression: &Expression,
@@ -49,18 +50,26 @@ fn infer(
             (substitutions, function_type)
         }
         Expression::Let(variable, bound_expression, expression) => {
+            let mut environment = environment.clone();
+
+            // Assume a concrete type of the variable for recursive types.
+            environment.insert(
+                variable.clone(),
+                TypeScheme(Default::default(), Type::new_variable()),
+            );
+
             let (mut substitutions, type_) = infer(&environment, &bound_expression)?;
 
+            // Use the inferred type to construct the actual type which is possibly recursive.
             let type_scheme = TypeScheme(
                 type_
                     .variables()
-                    .difference(&calculate_free_variables_in_environment(environment))
+                    .difference(&calculate_free_variables_in_environment(&environment))
                     .cloned()
                     .collect(),
                 type_,
             );
 
-            let mut environment = environment.clone();
             environment.insert(variable.clone(), type_scheme);
 
             let (other_substitutions, type_) = infer(&environment, &expression)?;
