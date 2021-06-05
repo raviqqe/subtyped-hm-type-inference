@@ -1,6 +1,8 @@
-# hm-type-inference
+# subtyped-hm-type-inference
 
-Hindley-Milner type inference in Rust
+Hindley-Milner type inference with subtyping in Rust
+
+Implemented as an experiment for [the Ein programming language](https://ein-lang.org)
 
 ## Usage
 
