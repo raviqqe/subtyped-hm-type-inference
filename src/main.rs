@@ -31,7 +31,7 @@ fn main() {
         let_("f", lambda("x", lambda("y", var("x"))), var("f")),
         let_("f", lambda("x", app(var("f"), var("x"))), var("f")),
     ] {
-        let type_scheme = infer_type_scheme(expression).unwrap();
+        let type_scheme = infer_type(expression).unwrap();
 
         println!("{} : {}", expression, type_scheme);
     }
